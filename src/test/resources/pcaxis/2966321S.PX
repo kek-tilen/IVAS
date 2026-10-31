@@ -1,0 +1,126 @@
+CHARSET="ANSI";
+AXIS-VERSION="2013";
+CODEPAGE="windows-1250";
+LANGUAGE="sl";
+LANGUAGES="sl","en";
+CREATION-DATE="20211123 10:30";
+DECIMALS=0;
+SHOWDECIMALS=0;
+MATRIX="2966321S";
+SUBJECT-CODE="88";
+SUBJECT-AREA="Razvoj in tehnologija - Development and Technology";
+SUBJECT-AREA[en]="Development and Technology";
+COPYRIGHT=YES;
+DESCRIPTION="Število podjetij po strukturi raèuna, poslanega v prejšnjem letu, in velikostnem razredu, Slovenija, letno";
+DESCRIPTION[en]="Number of enterprises by structure of invoices sent in the previous year and size class, Slovenia, annually";
+TITLE="Število podjetij po: LETO, STRUKTURA RAÈUNA, POSLANEGA V PREJŠNJEM LETU, VELIKOSTNI RAZRED PODJETJA";
+TITLE[en]="Number of enterprises by YEAR, STRUCTURE OF INVOICES SENT IN THE PREVIOUS YEAR and ENTERPRISE SIZE CLASS";
+CONTENTS="Število podjetij";
+CONTENTS[en]="Number of enterprises";
+UNITS="število";
+UNITS[en]="number";
+STUB="LETO","STRUKTURA RAÈUNA, POSLANEGA V PREJŠNJEM LETU";
+STUB[en]="YEAR","STRUCTURE OF INVOICES SENT IN THE PREVIOUS YEAR";
+HEADING="VELIKOSTNI RAZRED PODJETJA";
+HEADING[en]="ENTERPRISE SIZE CLASS";
+VALUES("LETO")="2021","2022","2023","2024","2025";
+VALUES[en]("YEAR")="2021","2022","2023","2024","2025";
+VALUES("STRUKTURA RAÈUNA, POSLANEGA V PREJŠNJEM LETU")=
+"0 Število podjetij",
+"1 Poslalo raèune v standardizirani strukturi, primerni za avtomatizirano obdelavo (e-raèune), v prejšnjem letu",
+"1.1 Poslalo manj kot 10 % vseh raèunov v standardizirani strukturi, primerni za avtomatizirano obdelavo (e-raèune)",
+"1.2 Poslalo vsaj 10 %, vendar manj kot 25 % vseh raèunov v standardizirani strukturi, primerni za avtomatizirano obdelavo (e-raèune)",
+"1.3 Poslalo vsaj 25 %, vendar manj kot 50 % vseh raèunov v standardizirani strukturi, primerni za avtomatizirano obdelavo (e-raèune)",
+"1.4 Poslalo vsaj 50 %, vendar manj kot 75 % vseh raèunov v standardizirani strukturi, primerni za avtomatizirano obdelavo (e-raèune)",
+"1.5 Poslalo vsaj 75 % vseh raèunov v standardizirani strukturi, primerni za avtomatizirano obdelavo (e-raèune)",
+"2 Poslalo raèune v elektronski obliki, ki ni primerna za avtomatizirano obdelavo (npr. e-pošta, priponka v formatu PDF), v prejšnjem letu",
+"3 Poslalo raèune v papirnati obliki v prejšnjem letu";
+VALUES[en]("STRUCTURE OF INVOICES SENT IN THE PREVIOUS YEAR")=
+"0 Number of enterprises",
+"1 Sent invoices in standard structure suitable for automated processing (e-invoices) in the previous year",
+"1.1 Sent less than 10% of all invoices in standard structure suitable for automated processing (e-invoices)",
+"1.2 Sent at least 10% but less than 25% of all invoices in standard structure suitable for automated processing (e-invoices)",
+"1.3 Sent at least 25% but less than 50% of all invoices in standard structure suitable for automated processing (e-invoices)",
+"1.4 Sent at least 50% but less than 75% of all invoices in standard structure suitable for automated processing (e-invoices)",
+"1.5 Sent at least 75% of all invoices in standard structure suitable for automated processing (e-invoices)",
+"2 Sent invoices in electronic form not suitable for automated processing (e.g. e-mail, attachment as PDF) in the previous year",
+"3 Sent invoices in paper form in the previous year";
+VALUES("VELIKOSTNI RAZRED PODJETJA")="10 ali veè zaposlenih in samozaposlenih",
+"10–49 zaposlenih in samozaposlenih","50–249 zaposlenih in samozaposlenih",
+"250 ali veè zaposlenih in samozaposlenih";
+VALUES[en]("ENTERPRISE SIZE CLASS")="10 or more employees and self-employed",
+"10–49 employees and self-employed","50–249 employees and self-employed",
+"250 or more employees and self-employed";
+TIMEVAL("LETO")=TLIST(A1),"2021","2022","2023","2024","2025";
+TIMEVAL[en]("YEAR")=TLIST(A1),"2021","2022","2023","2024","2025";
+CODES("LETO")="2021","2022","2023","2024","2025";
+CODES[en]("YEAR")="2021","2022","2023","2024","2025";
+CODES("STRUKTURA RAÈUNA, POSLANEGA V PREJŠNJEM LETU")="STAT001","STAT00847","STAT00853","STAT00854",
+"STAT00855","STAT00856","STAT00857","STAT00849","STAT00851";
+CODES[en]("STRUCTURE OF INVOICES SENT IN THE PREVIOUS YEAR")="STAT001","STAT00847","STAT00853",
+"STAT00854","STAT00855","STAT00856","STAT00857","STAT00849","STAT00851";
+CODES("VELIKOSTNI RAZRED PODJETJA")="1","2","3","4";
+CODES[en]("ENTERPRISE SIZE CLASS")="1","2","3","4";
+LAST-UPDATED="20251204 10:30";
+CONTACT="Statistièni urad RS, T: (01) 241 64 04, E: gp.surs@gov.si";
+CONTACT[en]="Statistical Office of the Republic of Slovenia, T: +386 1 241 64 04, E: gp.surs@gov.si";
+DATABASE="SI-STAT";
+DATABASE[en]="SI-STAT";
+SOURCE="Statistièni urad Republike Slovenije";
+SOURCE[en]="Statistical Office of the Republic of Slovenia";
+NOTEX="Vsote se zaradi zaokroževanja vèasih ne ujemajo.";
+NOTEX[en]="In some cases totals do not match because of rounding.";
+NOTE="Povezane vsebine:#- <A class=seznam HREF=https://www.stat.si/statweb/File/DocSysFile/8271 target=_blank>Metodološka pojasnila</A>#";
+NOTE[en]="Linked content:# - <A class=seznam HREF= https://www.stat.si/statweb/File/DocSysFile/8096 target=_blank>Methodological explanations</A>##";
+DATASYMBOL1="N";
+DATASYMBOL1[en]="N";
+DATASYMBOL2="-";
+DATASYMBOL2[en]="-";
+DATASYMBOL4="z";
+DATASYMBOL4[en]="z";
+DATA=
+7712 6356 1133 223 
+4479 3520 771 188 
+2199 1802 335 62 
+866 640 183 43 
+546 399 114 33 
+372 284 60 27 
+496 395 79 22 
+5849 4679 982 188 
+7201 5950 1038 214 
+8131 6639 1261 232 
+4919 3788 930 200 
+2093 1606 429 59 
+845 641 162 42 
+779 593 157 29 
+452 338 86 28 
+750 611 97 42 
+6540 5194 1138 208 
+7302 5911 1169 222 
+8576 6969 1372 235 
+5242 4106 933 203 
+2036 1656 331 49 
+971 773 162 35 
+596 391 172 33 
+671 542 94 36 
+968 744 174 50 
+7012 5620 1171 221 
+7584 6140 1225 219 
+8900 7261 1397 242 
+5584 4454 921 209 
+2020 1638 331 51 
+985 765 182 38 
+797 617 146 35 
+687 521 131 34 
+1094 913 131 50 
+7282 5821 1236 225 
+7844 6322 1296 226 
+9033 7419 1368 246 
+5704 4498 987 219 
+1884 1506 329 49 
+746 604 106 35 
+874 655 185 35 
+818 637 143 38 
+1382 1096 224 62 
+7613 6136 1252 225 
+7612 6208 1178 226; 
