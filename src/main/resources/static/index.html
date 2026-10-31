@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="sl">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>IVAS | Uporaba e-računov</title>
+  <link rel="stylesheet" href="/css/statistics.css">
+  <script defer src="/vendor/chart.umd.min.js"></script>
+  <script defer src="/js/statistics.js"></script>
+</head>
+<body>
+<header><a class="brand" href="/">IVAS <span>Invoice Verification and Assessment System</span></a><span class="badge">Odprti podatki · SURS</span></header>
+<main>
+  <p class="eyebrow">DIGITALIZACIJA POSLOVANJA</p>
+  <h1>Uporaba e-računov v Sloveniji</h1>
+  <p class="intro">IVAS preverja strukturirane elektronske račune. Raziščite, kako razširjena je njihova uporaba med slovenskimi podjetji.</p>
+  <section class="filters" aria-label="Filtri prikaza">
+    <label>Leto raziskovanja<select id="year" disabled></select></label>
+    <label>Velikost podjetja<select id="size" disabled></select></label>
+    <button id="reload" type="button">Osveži podatke</button>
+  </section>
+  <p id="status" role="status" aria-live="polite">Pridobivam podatke SURS …</p>
+  <div id="results" hidden>
+    <p id="period" class="period"></p>
+    <section class="metrics" aria-label="Povzetek">
+      <article><h2>Vključena podjetja</h2><strong id="total"></strong><p>v izbranem velikostnem razredu</p></article>
+      <article><h2>Pošiljajo e-račune</h2><strong id="share"></strong><p id="structured"></p></article>
+      <article><h2>Sprememba deleža</h2><strong id="change"></strong><p>glede na predhodno leto raziskovanja</p></article>
+    </section>
+    <section class="charts">
+      <article class="panel"><h2>Razširjenost strukturiranih e-računov</h2><p>Delež podjetij v izbranem velikostnem razredu (%)</p><div class="plot"><canvas id="trend" role="img" aria-label="Gibanje deleža podjetij, ki pošiljajo e-račune. Vrednosti so tudi v tabeli spodaj."></canvas></div></article>
+      <article class="panel"><h2>Načini pošiljanja računov</h2><p>Število podjetij v izbranem letu · kategorije se prekrivajo</p><div class="plot"><canvas id="comparison" role="img" aria-label="Primerjava števila podjetij po načinu pošiljanja računov. Vrednosti so tudi v tabeli spodaj."></canvas></div></article>
+    </section>
+    <details class="panel"><summary>Pregled podatkov za izbrano velikost podjetja</summary><div class="table-scroll"><table><caption>Število podjetij po letu raziskovanja</caption><thead><tr><th scope="col">Leto</th><th scope="col">Vsi</th><th scope="col">E-računi</th><th scope="col">Nestrukturirani</th><th scope="col">Papirnati</th><th scope="col">Delež e-računov</th></tr></thead><tbody id="data-rows"></tbody></table></div></details>
+  </div>
+  <aside class="note"><h2>Kako brati podatke</h2><p>Strukturirani e-računi omogočajo avtomatizirano obdelavo. PDF ali račun v besedilu e-pošte spada med nestrukturirane elektronske račune.</p><p>Štejemo podjetja, ne računov. Podjetje lahko uporablja več oblik računov, zato se kategorije prekrivajo. Skupni razred »10 ali več« že vključuje posamezne velikostne razrede in se z njimi ne sešteva. Podjetja z manj kot 10 zaposlenimi in samozaposlenimi niso zajeta. Vsote lahko odstopajo zaradi zaokroževanja. Manjkajoče vrednosti so označene z »—«.</p><p>Statistika opisuje uporabo e-računov in ne določa veljavnosti računa ali zanesljivosti dobavitelja.</p></aside>
+  <footer>Vir: <a href="https://podatki.gov.si/dataset/surs2966321s">SURS prek portala OPSI</a> · <a href="https://pxweb.stat.si/SiStatData/Resources/PX/Databases/Data/2966321S.PX">PCAXIS 2966321S</a> · <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a><p id="source-time"></p></footer>
+</main>
+</body></html>
