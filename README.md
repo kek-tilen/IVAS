@@ -13,6 +13,7 @@ Rezultat je strukturirano poročilo JSON s posameznimi preverjanji, zaznanimi ne
 | VIES | Preverjanje veljavnosti EU DDV številk | SOAP / XML |
 | API Recherche d'Entreprises | Preverjanje francoskih dobaviteljev po SIREN/SIRET | REST / JSON |
 | ARES | Preverjanje čeških dobaviteljev po IČO | REST / JSON |
+| SURS / OPSI | Statistika uporabe strukturiranih e-računov | HTTP / PCAXIS (.PX) |
 
 **Dokumentacija:**
 
@@ -76,3 +77,14 @@ Parser je preverjen na uradnem izrisanem DOM-u ARES; dokumentacija vsebuje Maven
 Projekt je v fazi načrtovanja in začetne implementacije. Zunanje storitve so bile preliminarno preverjene z ročnimi HTTP zahtevki; celoten integracijski tok še ni implementiran.
 
 Za razvoj in demonstracijo so predvideni sintetični UBL računi ter javno dostopni registrski podatki.
+
+
+## Odprti podatki: uporaba e-računov
+
+IVAS vključuje spletni pregled uporabe strukturiranih e-računov v Sloveniji na podlagi odprtih podatkov SURS, objavljenih na OPSI. Ob nalaganju pridobi in razčleni datoteko PCAXIS; prikaz omogoča filtriranje po letu in velikosti podjetja, izračun deležev, medletne spremembe ter dva grafa Chart.js.
+
+Zagon z JDK 25: `./mvnw.cmd spring-boot:run`, nato odprite http://localhost:8080/.
+API: `GET /api/v1/statistics/invoices`.
+
+Podrobnosti, razlaga podatkov, omejitve in preverjanje: [Statistika uporabe e-računov](docs/Statistika_ERacunov.md).
+Statistika je informativna in ne vpliva na preverjanje posameznega računa.
