@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="sl">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>IVAS | Pomoč pri pregledu računa</title>
+  <link rel="stylesheet" href="/css/statistics.css"><link rel="stylesheet" href="/css/invoice-advice.css">
+  <script defer src="/js/invoice-advice.js"></script>
+</head>
+<body>
+<header><a class="brand" href="/">IVAS <span>Invoice Verification and Assessment System</span></a><nav aria-label="Glavna navigacija"><a href="/">Statistika e-računov</a><a href="/invoice-advice.html" aria-current="page">Pomoč pri računu</a></nav></header>
+<main>
+  <p class="eyebrow">NALOGA 4 · AZURE OPENAI</p><h1>Pomoč pri pregledu računa</h1>
+  <p class="intro">Vnesite podatke konkretnega računa in svoje vprašanje. IVAS lokalno preveri osnovne vsote; AI pojasni podatke, opozori na omejitve in predlaga nadaljnje korake. Končno odločitev sprejmete vi.</p>
+  <p id="ai-configuration" class="notice" role="status">Preverjam konfiguracijo AI …</p>
+  <form id="invoice-form">
+    <fieldset id="invoice-fields">
+      <section class="panel"><div class="section-title"><h2>1. Podatki računa</h2><button type="button" id="sample" class="secondary">Vstavi sintetični primer</button></div>
+        <div class="form-grid">
+          <label>Številka računa<input name="invoiceNumber" required maxlength="100" autocomplete="off" placeholder="DEMO-2026-001"></label>
+          <label>Naziv dobavitelja<input name="supplierName" required maxlength="200" autocomplete="off"></label>
+          <label>Država dobavitelja (ISO)<input name="supplierCountry" required minlength="2" maxlength="2" pattern="[A-Za-z]{2}" placeholder="SI" autocomplete="off"></label>
+          <label>DDV identifikator (neobvezno)<input name="supplierVatId" maxlength="40" autocomplete="off"></label>
+          <label>Datum izdaje<input name="issueDate" type="date" required min="1900-01-01" max="2100-12-31"></label>
+          <label>Datum zapadlosti (neobvezno)<input name="dueDate" type="date" min="1900-01-01" max="2100-12-31"></label>
+          <label>Valuta<select name="currency"><option>EUR</option><option>CZK</option><option>USD</option><option>GBP</option><option>CHF</option><option>PLN</option></select></label>
+        </div>
+      </section>
+      <section class="panel"><div class="section-title"><h2>2. Postavke in navedene vsote</h2><button type="button" id="add-item" class="secondary">Dodaj postavko</button></div>
+        <p>Obrazec je namenjen običajnim pozitivnim računom. Vnesite neto cene brez davka. Popusti in dodatni stroški na ravni računa ter dobropisi niso vključeni v lokalna preverjanja.</p>
+        <div id="invoice-items"></div>
+        <div class="form-grid totals">
+          <label>Neto skupaj<input name="netTotal" type="number" min="0" max="1000000000" step="0.01" required></label>
+          <label>Davek skupaj<input name="taxTotal" type="number" min="0" max="1000000000" step="0.01" required></label>
+          <label>Bruto skupaj<input name="grossTotal" type="number" min="0" max="1000000000" step="0.01" required></label>
+        </div>
+      </section>
+      <section class="panel"><h2>3. Kaj želite razjasniti?</h2>
+        <label>Vaše vprašanje<textarea name="question" rows="3" required maxlength="1200" placeholder="Katere neskladnosti v tem računu moram preveriti pred nadaljnjo obravnavo?"></textarea></label>
+        <label>Dodaten kontekst (neobvezno)<textarea name="notes" rows="2" maxlength="1200" placeholder="Npr. pri dobavitelju želim razjasniti razliko med zneski."></textarea></label>
+        <label class="consent"><input name="consent" type="checkbox" required><span>Želim AI razlago in soglašam s pošiljanjem podatkov iz tega obrazca storitvi Microsoft Azure OpenAI. Klic lahko povzroči strošek na konfiguriranem Azure računu.</span></label>
+        <div class="submit-row"><button id="request-advice" type="submit" disabled>Pridobi AI razlago</button><span class="hint">En klic ob oddaji · brez samodejnih ponovitev</span></div>
+      </section>
+    </fieldset>
+  </form>
+  <p id="advice-status" role="status" aria-live="polite"></p>
+  <section id="advice-results" hidden aria-label="Rezultat pregleda">
+    <section class="panel"><h2>Lokalna preverjanja</h2><p>Izračunano z BigDecimal. Ujemanje vsot ne potrjuje pravne ali davčne veljavnosti.</p><ul id="local-checks" class="check-list"></ul></section>
+    <section class="panel ai-result"><p class="eyebrow">AI RAZLAGA · INFORMATIVNO</p><h2>Povzetek</h2><p id="ai-summary"></p><h3>Opažanja</h3><ul id="ai-observations"></ul><h3>Predlagani nadaljnji koraki</h3><ul id="ai-actions"></ul><h3>Manjkajoče informacije</h3><ul id="ai-missing"></ul><p id="ai-metadata" class="hint"></p></section>
+    <details class="panel"><summary>Strukturirani rezultat JSON</summary><pre id="advice-json"></pre><button type="button" id="download-json" class="secondary">Prenesi JSON</button></details>
+  </section>
+  <aside class="note"><h2>Meje pregleda</h2><p>Ta obrazec ne preverja UBL sheme, VIES, ARES, identitete dobavitelja ali davčne skladnosti. Ne pomeni odobritve računa ali plačila. Morebitna preverjanja v drugih delih IVAS se tukaj ne izvajajo samodejno. AI lahko poda napačno razlago.</p><p>Za demonstracijo uporabite sintetične podatke. Obrazec in rezultati se ne shranjujejo v brskalniško shrambo ali aplikacijsko zbirko.</p></aside>
+</main>
+</body>
+</html>

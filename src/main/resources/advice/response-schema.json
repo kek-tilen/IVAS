@@ -1,0 +1,11 @@
+{
+  "type": "object",
+  "properties": {
+    "summary": {"type": "string", "description": "Slovenian summary, at most 1600 characters."},
+    "observations": {"type": "array", "items": {"type": "string"}, "description": "At most 8 concise observations, each at most 600 characters."},
+    "recommendedActions": {"type": "array", "items": {"type": "string"}, "description": "At most 8 manual next steps, each at most 600 characters."},
+    "missingInformation": {"type": "array", "items": {"type": "string"}, "description": "At most 8 missing facts, each at most 600 characters."}
+  },
+  "required": ["summary", "observations", "recommendedActions", "missingInformation"],
+  "additionalProperties": false
+}
