@@ -88,3 +88,14 @@ API: `GET /api/v1/statistics/invoices`.
 
 Podrobnosti, razlaga podatkov, omejitve in preverjanje: [Statistika uporabe e-računov](docs/Statistika_ERacunov.md).
 Statistika je informativna in ne vpliva na preverjanje posameznega računa.
+
+## AI pomoč pri konkretnem računu – Naloga 4
+
+Obrazec na http://localhost:8080/invoice-advice.html iz uporabnikovega vnosa in
+lokalno preverjenih vsot sestavi dinamičen prompt za Azure OpenAI. Odgovor sledi
+JSON shemi in se preslika v Java razrede; vmesnik prikaže razlago in omogoča prenos
+JSON. Zahteva se pošlje samo ob izrecni oddaji s soglasjem.
+
+AI je privzeto izklopljen. Azure model še ni deployan in živi klic ni preverjen.
+**Deployment, endpoint, ključ, zagon, omejitve in ročni preizkus:**
+[Naloga 4 – Azure OpenAI](docs/Naloga4_LLM.md).
