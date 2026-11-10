@@ -1,0 +1,119 @@
+syntax = "proto3";
+package ivas.v1;
+option java_package = "um.feri.ipt.tids.project.grpc.v1";
+option java_multiple_files = true;
+import "google/protobuf/timestamp.proto";
+
+// Add fields using new numbers. Reserve removed field numbers and names.
+service InvoiceVerificationService {
+  rpc GetCapabilities(GetCapabilitiesRequest) returns (GetCapabilitiesResponse);
+  rpc ValidateInvoice(ValidateInvoiceRequest) returns (ValidateInvoiceResponse);
+  rpc LookupSupplier(LookupSupplierRequest) returns (LookupSupplierResponse);
+  rpc VerifyInvoice(VerifyInvoiceRequest) returns (stream VerificationEvent);
+}
+message Supplier {
+  string name = 1;
+  string country = 2;
+  optional string vat_id = 3;
+  optional string registry_id = 4;
+}
+message InvoiceLine {
+  string description = 1;
+  string quantity = 2; // Decimal strings, never binary floating point.
+  string unit_net_price = 3;
+}
+message Invoice {
+  string invoice_number = 1;
+  Supplier supplier = 2;
+  string issue_date = 3; // ISO 8601 yyyy-MM-dd.
+  optional string due_date = 4;
+  string currency = 5;
+  repeated InvoiceLine items = 6;
+  string net_total = 7;
+  string tax_total = 8;
+  string gross_total = 9;
+}
+enum CheckStatus {
+  CHECK_STATUS_UNSPECIFIED = 0;
+  PASS = 1;
+  FAIL = 2;
+  UNKNOWN = 3;
+  NOT_APPLICABLE = 4;
+}
+message CheckResult {
+  string code = 1;
+  CheckStatus status = 2;
+  string message = 3;
+  string source = 4;
+}
+message LocalEvaluation {
+  string calculated_line_net_total = 1;
+  string expected_gross_total = 2;
+  repeated CheckResult checks = 3;
+}
+enum RegistryStatus {
+  REGISTRY_STATUS_UNSPECIFIED = 0;
+  FOUND = 1;
+  PARTIAL = 2;
+  NOT_FOUND = 3;
+  SOURCE_ERROR = 4;
+  UNSUPPORTED = 5;
+  MISSING_IDENTIFIER = 6;
+}
+message SupplierLookupResult {
+  RegistryStatus status = 1;
+  optional Supplier supplier = 2;
+  string source = 3;
+  string source_url = 4;
+  google.protobuf.Timestamp fetched_at = 5;
+  string message = 6;
+}
+enum Assessment {
+  ASSESSMENT_UNSPECIFIED = 0;
+  NO_ISSUES_DETECTED = 1;
+  REVIEW_REQUIRED = 2;
+  INCOMPLETE_VERIFICATION = 3;
+}
+message VerificationReport {
+  string request_id = 1;
+  string invoice_number = 2;
+  google.protobuf.Timestamp completed_at = 3;
+  LocalEvaluation local = 4;
+  optional SupplierLookupResult supplier = 5;
+  repeated CheckResult checks = 6;
+  Assessment assessment = 7;
+  repeated string findings = 8;
+  string recommended_action = 9;
+  string scope = 10;
+}
+message GetCapabilitiesRequest {}
+message GetCapabilitiesResponse {
+  repeated string local_checks = 1;
+  repeated string registry_countries = 2;
+  uint32 max_items = 3;
+  uint32 max_request_bytes = 4;
+  bool ubl_import_supported = 5;
+  string scope = 6;
+}
+message ValidateInvoiceRequest { Invoice invoice = 1; }
+message ValidateInvoiceResponse { LocalEvaluation local = 1; }
+message LookupSupplierRequest { Supplier supplier = 1; }
+message LookupSupplierResponse { SupplierLookupResult result = 1; }
+message VerifyInvoiceRequest {
+  Invoice invoice = 1;
+  bool check_registry = 2; // Only explicit opt-in starts ARES.
+}
+message VerificationStarted { string invoice_number = 1; }
+message RegistryStarted { string source = 1; }
+message VerificationEvent {
+  string request_id = 1;
+  uint32 sequence = 2;
+  google.protobuf.Timestamp occurred_at = 3;
+  oneof payload {
+    VerificationStarted started = 4;
+    LocalEvaluation local = 5;
+    RegistryStarted registry_started = 6;
+    SupplierLookupResult supplier = 7;
+    VerificationReport report = 8;
+  }
+}

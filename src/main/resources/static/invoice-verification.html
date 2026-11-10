@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="sl">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>IVAS | Preverjanje računa</title>
+  <link rel="stylesheet" href="/css/statistics.css"><link rel="stylesheet" href="/css/invoice-advice.css">
+  <link rel="stylesheet" href="/css/invoice-verification.css">
+  <script defer src="/js/invoice-verification.js"></script>
+</head>
+<body>
+<header><a class="brand" href="/">IVAS <span>Invoice Verification and Assessment System</span></a><nav aria-label="Glavna navigacija"><a href="/">Statistika e-računov</a><a href="/invoice-verification.html" aria-current="page">Preverjanje računa</a><a href="/invoice-advice.html">AI pomoč</a></nav></header>
+<main>
+  <p class="eyebrow">PREGLED RAČUNA · SPROTNI REZULTATI</p><h1>Preverjanje računa</h1>
+  <p class="intro">Preverite vsote in datume računa. Po želji pridobite podatke češkega dobavitelja iz ARES. Rezultati se prikazujejo sproti, končno odločitev pa sprejmete vi.</p>
+  <p id="capabilities" class="notice" role="status">Preverjam razpoložljiva preverjanja …</p>
+  <button type="button" id="retry-capabilities" class="secondary" hidden>Ponovno preveri povezavo</button>
+  <form id="verification-form">
+    <fieldset id="verification-fields" disabled>
+      <section class="panel"><div class="section-title"><h2>1. Podatki računa</h2><button type="button" id="sample" class="secondary">Vstavi sintetični primer</button></div>
+        <div class="form-grid">
+          <label>Številka računa<input name="invoiceNumber" required maxlength="100" autocomplete="off"></label>
+          <label>Naziv dobavitelja<input name="supplierName" required maxlength="200" autocomplete="off"></label>
+          <label>Država dobavitelja (ISO)<input name="supplierCountry" required maxlength="2" minlength="2" pattern="[A-Za-z]{2}" placeholder="SI" autocomplete="off"></label>
+          <label>DDV identifikator (neobvezno)<input name="supplierVatId" maxlength="40" autocomplete="off"></label>
+          <label>Registrski identifikator (IČO za CZ)<input name="supplierRegistryId" maxlength="40" autocomplete="off" aria-describedby="registry-hint"></label>
+          <label>Valuta<select name="currency"><option>EUR</option><option>CZK</option><option>USD</option><option>GBP</option><option>CHF</option><option>PLN</option></select></label>
+          <label>Datum izdaje<input name="issueDate" type="date" required min="1900-01-01" max="2100-12-31"></label>
+          <label>Datum zapadlosti (neobvezno)<input name="dueDate" type="date" min="1900-01-01" max="2100-12-31"></label>
+        </div>
+        <p id="registry-hint" class="hint">ARES podpira CZ in izrecno naveden osemmestni IČO. Začetne ničle se ohranijo. DDV številka ni nadomestilo za IČO.</p>
+      </section>
+      <section class="panel"><div class="section-title"><h2>2. Postavke in navedene vsote</h2><button type="button" id="add-item" class="secondary">Dodaj postavko</button></div>
+        <p>Vnesite običajen pozitiven račun brez popustov in dodatnih stroškov na ravni dokumenta. Podprtih je največ 30 postavk.</p>
+        <div id="invoice-items"></div>
+        <div class="form-grid totals">
+          <label>Neto skupaj<input name="netTotal" type="number" min="0" max="1000000000" step="any" required></label>
+          <label>Davek skupaj<input name="taxTotal" type="number" min="0" max="1000000000" step="any" required></label>
+          <label>Bruto skupaj<input name="grossTotal" type="number" min="0" max="1000000000" step="any" required></label>
+        </div>
+      </section>
+      <section class="panel"><h2>3. Izberite preverjanje</h2>
+        <label class="consent"><input name="checkRegistry" type="checkbox"><span>V celoten pregled vključi ARES (samo CZ). IČO bo poslan javnemu češkemu registru; celoten račun ostane v IVAS.</span></label>
+        <div class="submit-row"><button type="submit" id="verify">Začni preverjanje</button><button type="button" id="validate" class="secondary">Preveri samo lokalno</button><button type="button" id="lookup" class="secondary">Pridobi dobavitelja iz ARES</button></div>
+        <p class="hint">ARES se kliče samo ob izrecni izbiri. Brez samodejnih ponovitev. Ta pregled ne uporablja Azure AI.</p>
+      </section>
+    </fieldset>
+    <button type="button" id="cancel" class="secondary" hidden>Prekini preverjanje</button>
+  </form>
+  <p id="verification-status" role="status" aria-live="polite"></p>
+  <section id="verification-results" hidden aria-label="Rezultati preverjanja">
+    <section class="panel"><h2>Potek preverjanja</h2><ol id="progress" aria-live="polite" aria-relevant="additions"></ol></section>
+    <section class="panel" id="local-panel" hidden><h2>Lokalna preverjanja</h2><p id="local-totals"></p><ul id="local-checks" class="check-list"></ul></section>
+    <section class="panel" id="supplier-panel" hidden><h2>Dobavitelj iz ARES</h2><p id="supplier-result"></p></section>
+    <section class="panel" id="report-panel" hidden><h2>Končno poročilo</h2><p id="assessment" class="assessment"></p><p id="recommendation"></p><ul id="findings"></ul><p id="report-scope" class="hint"></p></section>
+    <details class="panel" id="json-panel" hidden><summary>Strukturirani rezultat JSON</summary><pre id="result-json"></pre><button type="button" id="download-json" class="secondary">Prenesi JSON</button></details>
+  </section>
+  <aside class="note"><h2>Obseg pregleda</h2><p>To je osnovni pregled vnesenih podatkov. Uvoz in shema UBL, VIES, francoski register ter davčna skladnost še niso vključeni. Ujemanje vsot in registrskega zapisa ne potrjuje veljavnosti računa in ne pomeni odobritve plačila.</p><p>Podatki se ne shranjujejo v aplikacijsko zbirko ali brskalniško shrambo. Za demonstracijo uporabite sintetične račune in javne registrske podatke.</p></aside>
+</main>
+</body></html>

@@ -101,11 +101,17 @@ public final class AresDomParser {
     }
 
     public AresResult awaitResult(Page page, String ico, String url, Instant time, double timeout) {
+        return awaitResult(page, ico, url, time, timeout, () -> false);
+    }
+
+    public AresResult awaitResult(Page page, String ico, String url, Instant time, double timeout,
+                                  java.util.function.BooleanSupplier cancelled) {
         if (!Double.isFinite(timeout) || timeout <= 0) throw new IllegalArgumentException("Timeout must be positive and finite.");
         // Poll the same parser used for extraction; no fixed sleeps or network-idle dependency.
         var latest = new java.util.concurrent.atomic.AtomicReference<AresResult>();
         try {
             page.waitForCondition(() -> {
+                if (cancelled.getAsBoolean()) throw new java.util.concurrent.CancellationException();
                 AresResult result = parse(page, ico, url, time);
                 latest.set(result);
                 return result.status() == Status.SUCCESS || result.status() == Status.NOT_FOUND

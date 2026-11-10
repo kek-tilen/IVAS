@@ -1,0 +1,10 @@
+#verification-status {min-height:28px;line-height:1.6;overflow-wrap:anywhere}
+#verification-status.error {color:#a32c24}
+#progress {padding-left:24px} #progress li {padding:6px 0;line-height:1.6;overflow-wrap:anywhere}
+.assessment {font-size:20px;font-weight:700;color:#80550b}
+#findings li {margin:8px 0;line-height:1.6}
+#supplier-result {white-space:pre-line;line-height:1.7}
+#cancel {margin-bottom:14px}
+button:focus-visible,summary:focus-visible,a:focus-visible {outline:3px solid #b07c16;outline-offset:4px}
+[hidden] {display:none!important}
+@media(max-width:760px){.submit-row button {width:100%}}

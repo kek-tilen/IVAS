@@ -29,7 +29,9 @@ public final class AresScraper {
         this.channel = channel;
     }
 
-    public AresResult scrape(String ico) {
+    public AresResult scrape(String ico) { return scrape(ico, () -> false); }
+
+    public AresResult scrape(String ico, java.util.function.BooleanSupplier cancelled) {
         Ico.validate(ico); // Before creating Playwright or launching a browser.
         String url = "https://ares.gov.cz/ekonomicke-subjekty?ico=" + ico;
         var time = clock.instant();
@@ -39,13 +41,15 @@ public final class AresScraper {
              BrowserContext context = browser.newContext(new Browser.NewContextOptions().setLocale("cs-CZ"))) {
             Page page = context.newPage();
             page.setDefaultTimeout(timeout.toMillis());
+            if (cancelled.getAsBoolean()) throw new java.util.concurrent.CancellationException();
             Response response = page.navigate(url, new Page.NavigateOptions().setWaitUntil(WaitUntilState.DOMCONTENTLOADED));
             // Only the top-level document status is checked; no response body or ARES API is read.
             if (response != null && response.status() >= 400) {
                 return create(ico, url, time, Status.ERROR, null,
                         List.of(new Problem("HTTP_ERROR", "ARES page returned HTTP " + response.status() + ".")));
             }
-            return new AresDomParser().awaitResult(page, ico, url, clock.instant(), timeout.toMillis());
+            if (cancelled.getAsBoolean()) throw new java.util.concurrent.CancellationException();
+            return new AresDomParser().awaitResult(page, ico, url, clock.instant(), timeout.toMillis(), cancelled);
         } catch (TimeoutError e) {
             return create(ico, url, clock.instant(), Status.ERROR, null,
                     List.of(new Problem("TIMEOUT", "Timed out waiting for the ARES page.")));
