@@ -99,3 +99,18 @@ JSON. Zahteva se pošlje samo ob izrecni oddaji s soglasjem.
 AI je privzeto izklopljen. Azure model še ni deployan in živi klic ni preverjen.
 **Deployment, endpoint, ključ, zagon, omejitve in ročni preizkus:**
 [Naloga 4 – Azure OpenAI](docs/Naloga4_LLM.md).
+
+
+## Sprotno preverjanje računa prek gRPC - Naloga 5
+
+Na **http://localhost:8080/invoice-verification.html** lahko preverite vsote in
+datume računa ter izrecno pridobite češkega dobavitelja iz ARES. Celotni pregled
+prikazuje rezultate sproti prek gRPC streaminga in spletnega SSE prehoda.
+Implementirana je ena storitev s štirimi RPC metodami in neposrednim Java CLI
+odjemalcem. Azure AI pri tem ni potreben.
+
+Gre za osnovni pregled vnesenih podatkov; UBL import, VIES in davčna skladnost
+še niso vključeni. Končno poročilo jasno navede manjkajoča preverjanja.
+
+**Zagon, RPC pogodba, CLI, demonstracija in preverjanje:**
+[Naloga 5 - gRPC](docs/Naloga5_gRPC.md).

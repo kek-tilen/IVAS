@@ -1,0 +1,15 @@
+{
+  "invoiceNumber": "DEMO-2026-001",
+  "supplierName": "Izmišljeni dobavitelj",
+  "supplierCountry": "SI",
+  "supplierVatId": null,
+  "supplierRegistryId": null,
+  "issueDate": "2026-11-10",
+  "dueDate": "2026-11-24",
+  "currency": "EUR",
+  "items": [
+    {"description": "Storitev A", "quantity": "2", "unitNetPrice": "100.00"},
+    {"description": "Storitev B", "quantity": "1", "unitNetPrice": "50.00"}
+  ],
+  "netTotal": "250.00", "taxTotal": "55.00", "grossTotal": "305.00"
+}
