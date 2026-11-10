@@ -31,6 +31,12 @@
 		<start-class>um.feri.ipt.tids.project.ProjectApplication</start-class>
 	</properties>
 	<dependencies>
+        <!-- Naloga 5: versions aligned by the existing Spring Boot BOM. -->
+        <dependency><groupId>io.grpc</groupId><artifactId>grpc-netty-shaded</artifactId></dependency>
+        <dependency><groupId>io.grpc</groupId><artifactId>grpc-protobuf</artifactId></dependency>
+        <dependency><groupId>io.grpc</groupId><artifactId>grpc-stub</artifactId></dependency>
+        <dependency><groupId>com.google.protobuf</groupId><artifactId>protobuf-java-util</artifactId></dependency>
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-webmvc</artifactId>
@@ -73,7 +79,24 @@
 	</dependencies>
 
 	<build>
-		<plugins>
+        <extensions>
+            <extension><groupId>kr.motd.maven</groupId><artifactId>os-maven-plugin</artifactId><version>1.7.1</version></extension>
+        </extensions>
+        <plugins>
+            <plugin>
+                <groupId>org.xolstice.maven.plugins</groupId><artifactId>protobuf-maven-plugin</artifactId><version>0.6.1</version>
+                <configuration>
+                    <protocArtifact>com.google.protobuf:protoc:${protobuf-java.version}:exe:${os.detected.classifier}</protocArtifact>
+                    <pluginId>grpc-java</pluginId>
+                    <pluginArtifact>io.grpc:protoc-gen-grpc-java:${grpc-java.version}:exe:${os.detected.classifier}</pluginArtifact>
+                </configuration>
+                <executions><execution><goals><goal>compile</goal><goal>compile-custom</goal></goals></execution></executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId><artifactId>maven-surefire-plugin</artifactId>
+                <configuration><systemPropertyVariables><ivas.grpc.port>0</ivas.grpc.port></systemPropertyVariables></configuration>
+            </plugin>
+            <plugin><groupId>org.codehaus.mojo</groupId><artifactId>exec-maven-plugin</artifactId><version>3.6.3</version></plugin>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
