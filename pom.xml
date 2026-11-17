@@ -31,6 +31,12 @@
 		<start-class>um.feri.ipt.tids.project.ProjectApplication</start-class>
 	</properties>
 	<dependencies>
+        <!-- Naloga 6, stage 1: persistent invoices; dependency versions follow Boot BOM. -->
+        <dependency><groupId>org.springframework.boot</groupId><artifactId>spring-boot-starter-data-jpa</artifactId></dependency>
+        <dependency><groupId>org.springframework.boot</groupId><artifactId>spring-boot-starter-flyway</artifactId></dependency>
+        <dependency><groupId>org.flywaydb</groupId><artifactId>flyway-database-postgresql</artifactId></dependency>
+        <dependency><groupId>org.postgresql</groupId><artifactId>postgresql</artifactId><scope>runtime</scope></dependency>
+        <dependency><groupId>com.h2database</groupId><artifactId>h2</artifactId><scope>test</scope></dependency>
         <!-- Naloga 5: versions aligned by the existing Spring Boot BOM. -->
         <dependency><groupId>io.grpc</groupId><artifactId>grpc-netty-shaded</artifactId></dependency>
         <dependency><groupId>io.grpc</groupId><artifactId>grpc-protobuf</artifactId></dependency>
