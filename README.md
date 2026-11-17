@@ -2,18 +2,18 @@
 
 **IVAS** je integracijska storitev za predhodno preverjanje strukturiranih elektronskih računov. Namenjena je predvsem manjšim podjetjem in računovodskim servisom, ki prejemajo račune dobaviteljev iz Evropske unije.
 
-Sistem sprejme račun v formatu UBL 2.1 XML, izvede osnovna lokalna preverjanja ter s pomočjo zunanjih spletnih storitev preveri DDV identifikator in izbrane registrske podatke dobavitelja.
+Trenutna izvedba omogoča ročni vnos in trajno evidenco računov, osnovna lokalna preverjanja ter pridobivanje podatkov češkega dobavitelja iz ARES. Ciljna zasnova predvideva tudi uvoz UBL 2.1 XML, preverjanje DDV prek VIES in francoski poslovni register. Evidenca in preverjanje sta do naslednjih faz še ločena tokova.
 
 Rezultat je strukturirano poročilo JSON s posameznimi preverjanji, zaznanimi neskladji, skupno oceno računa in priporočilom za nadaljnjo obravnavo.
 
 ## Integrirana spletna storitev in zunanji viri
 
-| Storitev | Namen | Komunikacija |
-|---|---|---|
-| VIES | Preverjanje veljavnosti EU DDV številk | SOAP / XML |
-| API Recherche d'Entreprises | Preverjanje francoskih dobaviteljev po SIREN/SIRET | REST / JSON |
-| ARES | Preverjanje čeških dobaviteljev po IČO | REST / JSON |
-| SURS / OPSI | Statistika uporabe strukturiranih e-računov | HTTP / PCAXIS (.PX) |
+| Storitev | Namen | Komunikacija | Status |
+|---|---|---|---|
+| VIES | Preverjanje veljavnosti EU DDV številk | SOAP / XML | Načrtovano |
+| API Recherche d'Entreprises | Preverjanje francoskih dobaviteljev po SIREN/SIRET | REST / JSON | Načrtovano |
+| ARES | Preverjanje čeških dobaviteljev po IČO | Web scraping / HTML DOM | Implementirano |
+| SURS / OPSI | Statistika uporabe strukturiranih e-računov | HTTP / PCAXIS (.PX) | Implementirano |
 
 **Dokumentacija:**
 
@@ -74,7 +74,7 @@ Naloga 2: samostojni ARES HTML parser, navodila za zagon in dejanski rezultati p
 [`docs/Naloga2_Spletni_Parser.md`](docs/Naloga2_Spletni_Parser.md#14-implementacija-in-preverjanje-23-10-2026).
 Parser je preverjen na uradnem izrisanem DOM-u ARES; dokumentacija vsebuje Maven ukaze in dejanske rezultate testov.
 
-Projekt je v fazi načrtovanja in začetne implementacije. Zunanje storitve so bile preliminarno preverjene z ročnimi HTTP zahtevki; celoten integracijski tok še ni implementiran.
+Implementirani so ARES HTML parser, SURS PC-Axis statistika, izbirna AI pomoč in gRPC pregled računa. Naloga 6, stage 1 dodaja PostgreSQL evidenco računov. Povezovanje evidence s preverjanji ter VIES in francoski register sledijo v naslednjih fazah.
 
 Za razvoj in demonstracijo so predvideni sintetični UBL računi ter javno dostopni registrski podatki.
 
@@ -83,7 +83,7 @@ Za razvoj in demonstracijo so predvideni sintetični UBL računi ter javno dosto
 
 IVAS vključuje spletni pregled uporabe strukturiranih e-računov v Sloveniji na podlagi odprtih podatkov SURS, objavljenih na OPSI. Ob nalaganju pridobi in razčleni datoteko PCAXIS; prikaz omogoča filtriranje po letu in velikosti podjetja, izračun deležev, medletne spremembe ter dva grafa Chart.js.
 
-Zagon z JDK 25: `./mvnw.cmd spring-boot:run`, nato odprite http://localhost:8080/.
+Zagon z JDK 25: najprej `docker compose --env-file .env.example up -d --wait db`, nato `./mvnw.cmd spring-boot:run` in odprite http://localhost:8080/. PostgreSQL je od naloge 6 potreben za zagon glavne aplikacije.
 API: `GET /api/v1/statistics/invoices`.
 
 Podrobnosti, razlaga podatkov, omejitve in preverjanje: [Statistika uporabe e-računov](docs/Statistika_ERacunov.md).
@@ -114,3 +114,17 @@ Gre za osnovni pregled vnesenih podatkov; UBL import, VIES in davčna skladnost
 
 **Zagon, RPC pogodba, CLI, demonstracija in preverjanje:**
 [Naloga 5 - gRPC](docs/Naloga5_gRPC.md).
+
+
+## Evidenca računov – Naloga 6, stage 1
+
+Na **http://localhost:8080/invoices.html** lahko račun s postavkami shranite,
+odprete njegove podrobnosti ter uredite opombo in stanje obravnave. PostgreSQL
+ohrani podatke po ponovnem zagonu, Flyway verzionira shemo, preverjanje različice
+pa prepreči tihi prepis sočasnih sprememb.
+
+Shranjevanje še ne sproži zunanjih preverjanj; obstoječi gRPC obrazec ostaja
+samostojen. Tabele za zgodovino preverjanj so pripravljene za naslednje faze.
+
+**Zagon baze, nastavitve, API, testi in demonstracija:**
+[Naloga 6 – stage 1: evidenca računov](docs/Naloga6_Stage1_Shramba.md).
