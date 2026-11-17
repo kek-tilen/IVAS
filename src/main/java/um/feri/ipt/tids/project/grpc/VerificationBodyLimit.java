@@ -6,11 +6,15 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.*;
 
-/** Bound only the new JSON endpoints, including requests without Content-Length. */
+/** Bound invoice storage and verification JSON, including requests without Content-Length. */
 @Component
 public class VerificationBodyLimit extends OncePerRequestFilter {
     @Override protected boolean shouldNotFilter(HttpServletRequest request) {
-        return !request.getMethod().equals("POST") || !request.getRequestURI().startsWith("/api/v1/verification/");
+        String path = request.getRequestURI();
+        boolean verification = request.getMethod().equals("POST") && path.startsWith("/api/v1/verification/");
+        boolean invoices = java.util.Set.of("POST", "PATCH").contains(request.getMethod())
+                && (path.equals("/api/v1/invoices") || path.matches("/api/v1/invoices/[0-9a-fA-F-]{36}"));
+        return !verification && !invoices;
     }
     @Override protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws ServletException, IOException {

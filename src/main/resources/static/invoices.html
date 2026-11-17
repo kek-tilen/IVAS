@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="sl">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>IVAS | Računi</title>
+  <link rel="stylesheet" href="/css/statistics.css"><link rel="stylesheet" href="/css/invoice-advice.css">
+  <link rel="stylesheet" href="/css/invoices.css"><script defer src="/js/invoices.js"></script>
+</head>
+<body>
+<header><a class="brand" href="/invoices.html">IVAS <span>Invoice Verification and Assessment System</span></a>
+  <nav aria-label="Glavna navigacija"><a href="/invoices.html" aria-current="page">Računi</a><a href="/">Statistika e-računov</a><a href="/invoice-verification.html">Preverjanje računa</a><a href="/invoice-advice.html">AI pomoč</a></nav>
+</header>
+<main>
+  <p class="eyebrow">EVIDENCA IN OBRAVNAVA</p>
+  <div class="page-heading"><div><h1>Računi</h1><p class="intro">Shranite račun in spremljajte njegovo obravnavo. Podatki in opombe so vam na voljo tudi ob naslednjem obisku.</p></div><a class="button" href="#new" id="new-invoice">Nov račun</a></div>
+  <p id="invoice-status" role="status" aria-live="polite"></p>
+
+  <section class="panel" id="list-panel" aria-labelledby="list-heading">
+    <div class="section-title"><h2 id="list-heading">Shranjeni računi</h2><button class="secondary" type="button" id="reload-list">Osveži seznam</button></div>
+    <p id="list-count"></p>
+    <div id="empty-list" hidden><p>Začnite s prvim računom. Vnesete lahko svoje podatke ali uporabite sintetični primer.</p><a href="#new">Dodaj prvi račun →</a></div>
+    <div class="table-scroll" id="invoice-table" hidden><table><caption>Računi od najnovejšega vnosa</caption><thead><tr><th scope="col">Račun / dobavitelj</th><th scope="col">Država</th><th scope="col">Datum izdaje</th><th scope="col">Bruto</th><th scope="col">Obravnava</th></tr></thead><tbody id="invoice-rows"></tbody></table></div>
+    <div class="pagination" id="pagination" hidden><button type="button" id="previous-page" class="secondary">Prejšnja</button><span id="page-label"></span><button type="button" id="next-page" class="secondary">Naslednja</button></div>
+  </section>
+
+  <section id="create-panel" hidden aria-labelledby="create-heading">
+    <a href="#" class="back-link">← Nazaj na račune</a>
+    <form id="create-form"><fieldset id="create-fields">
+      <section class="panel"><div class="section-title"><h2 id="create-heading">Nov račun</h2><button class="secondary" type="button" id="sample-invoice">Vstavi sintetični primer</button></div>
+        <div class="form-grid">
+          <label>Številka računa<input name="invoiceNumber" required maxlength="100" autocomplete="off"></label>
+          <label>Naziv dobavitelja<input name="supplierName" required maxlength="200" autocomplete="off"></label>
+          <label>Država dobavitelja (ISO)<input name="supplierCountry" required minlength="2" maxlength="2" pattern="[A-Za-z]{2}" placeholder="SI" autocomplete="off"></label>
+          <label>DDV identifikator (neobvezno)<input name="supplierVatId" maxlength="40" autocomplete="off"></label>
+          <label>Registrski identifikator (neobvezno)<input name="supplierRegistryId" maxlength="40" autocomplete="off"></label>
+          <label>Valuta<select name="currency"><option>EUR</option><option>CZK</option><option>USD</option><option>GBP</option><option>CHF</option><option>PLN</option></select></label>
+          <label>Datum izdaje<input type="date" name="issueDate" required min="1900-01-01" max="2100-12-31"></label>
+          <label>Datum zapadlosti (neobvezno)<input type="date" name="dueDate" min="1900-01-01" max="2100-12-31"></label>
+        </div>
+      </section>
+      <section class="panel"><div class="section-title"><h2>Postavke</h2><button class="secondary" type="button" id="add-line">Dodaj postavko</button></div>
+        <p>Običajen pozitiven račun, največ 30 postavk. Zneske vnesite brez popustov ali dodatnih stroškov na ravni dokumenta.</p>
+        <div id="invoice-lines"></div>
+        <div class="form-grid totals">
+          <label>Neto skupaj<input name="netTotal" type="number" min="0" max="1000000000" step="any" required></label>
+          <label>Davek skupaj<input name="taxTotal" type="number" min="0" max="1000000000" step="any" required></label>
+          <label>Bruto skupaj<input name="grossTotal" type="number" min="0" max="1000000000" step="any" required></label>
+        </div>
+      </section>
+      <section class="panel"><h2>Obravnava</h2>
+        <div class="form-grid"><label>Stanje obravnave<select name="handlingStatus"><option value="NEW">Nov</option><option value="IN_REVIEW">V obravnavi</option><option value="RESOLVED">Zaključen</option></select></label></div>
+        <label>Opomba (neobvezno)<textarea name="note" rows="3" maxlength="2000"></textarea></label>
+        <div class="submit-row"><button type="submit" id="save-invoice">Shrani račun</button><a href="#">Prekliči</a></div>
+        <p class="hint">Shranjevanje ne sproži preverjanja zunanjih virov. Stanje obravnave določite sami.</p>
+      </section>
+    </fieldset></form>
+  </section>
+
+  <section id="detail-panel" hidden aria-labelledby="detail-heading">
+    <a href="#" class="back-link">← Nazaj na račune</a>
+    <section class="panel"><div class="section-title"><h2 id="detail-heading"></h2><button type="button" class="secondary" id="reload-detail">Ponovno naloži</button></div>
+      <p id="detail-supplier" class="supplier-title"></p><dl id="detail-data" class="detail-grid"></dl>
+      <div class="table-scroll"><table><caption>Postavke računa</caption><thead><tr><th scope="col">Opis</th><th scope="col">Količina</th><th scope="col">Neto cena enote</th></tr></thead><tbody id="detail-lines"></tbody></table></div>
+      <dl id="detail-totals" class="detail-grid totals"></dl>
+    </section>
+    <section class="panel"><h2>Obravnava računa</h2>
+      <form id="metadata-form"><fieldset id="metadata-fields">
+        <div class="form-grid"><label>Stanje obravnave<select name="handlingStatus"><option value="NEW">Nov</option><option value="IN_REVIEW">V obravnavi</option><option value="RESOLVED">Zaključen</option></select></label></div>
+        <label>Opomba<textarea name="note" rows="4" maxlength="2000"></textarea></label>
+        <div class="submit-row"><button type="submit" id="save-metadata">Shrani obravnavo</button><span id="detail-updated" class="hint"></span></div>
+      </fieldset></form>
+    </section>
+    <aside class="note"><h2>Preverjanje računa</h2><p>Ta račun še nima shranjenih rezultatov preverjanja. Stanje obravnave ni sistemska ocena računa.</p><p><a href="/invoice-verification.html">Odpri obstoječi obrazec za preverjanje →</a> Obrazec deluje samostojno. Podatke računa vnesite ponovno; rezultat se ne shrani v to evidenco.</p></aside>
+  </section>
+  <footer>IVAS · Evidenca računov. Za demonstracijo uporabite sintetične podatke.</footer>
+</main>
+</body>
+</html>

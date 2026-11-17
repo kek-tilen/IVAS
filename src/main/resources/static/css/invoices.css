@@ -1,0 +1,19 @@
+.page-heading {display:flex;justify-content:space-between;align-items:center;gap:24px}
+.page-heading .intro {margin-bottom:8px;max-width:680px}
+.button {display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;background:#17664f;color:#fff;border-radius:7px;padding:12px 20px;text-decoration:none;font-weight:600;min-height:44px}
+#invoice-status {min-height:24px;line-height:1.6;overflow-wrap:anywhere}
+#invoice-status.error {color:#a32c24}
+.back-link {display:inline-block;margin:10px 0}
+.pagination {display:flex;align-items:center;justify-content:flex-end;gap:16px;margin-top:22px}
+.pagination button {margin:0}
+.status-badge {display:inline-block;padding:5px 10px;border-radius:20px;font-size:12px;background:#eef2ef;color:#496356}
+.status-IN_REVIEW {background:#fff2d9;color:#80550b}.status-RESOLVED {background:#e4f2e9;color:#17664f}
+td .supplier-name {display:block;white-space:normal;overflow-wrap:anywhere;max-width:300px;color:#52675f;margin-top:5px}
+td a {display:inline-block;white-space:normal;overflow-wrap:anywhere;max-width:300px;font-weight:600}
+.detail-grid {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px;margin:24px 0 10px}
+.detail-grid div {min-width:0}.detail-grid dt {font-size:12px;color:#52675f}.detail-grid dd {margin:6px 0 0;font-size:15px;font-weight:600;overflow-wrap:anywhere}
+.supplier-title {font-size:18px!important;font-weight:600!important;color:#19352f!important;overflow-wrap:anywhere}
+#detail-lines td:first-child {white-space:normal;overflow-wrap:anywhere;min-width:160px;max-width:500px}
+#create-panel,#detail-panel {scroll-margin-top:20px}
+@media(max-width:760px){.page-heading{align-items:flex-start;flex-direction:column;gap:16px}.detail-grid{grid-template-columns:1fr 1fr}.pagination{justify-content:space-between;gap:8px}.pagination button{padding:10px}}
+@media(max-width:430px){.detail-grid{grid-template-columns:1fr}.page-heading .button{width:100%}.section-title button{width:100%}}
