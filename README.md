@@ -2,7 +2,7 @@
 
 **IVAS** je integracijska storitev za predhodno preverjanje strukturiranih elektronskih računov. Namenjena je predvsem manjšim podjetjem in računovodskim servisom, ki prejemajo račune dobaviteljev iz Evropske unije.
 
-Trenutna izvedba omogoča ročni vnos in trajno evidenco računov, osnovna lokalna preverjanja ter pridobivanje podatkov češkega dobavitelja iz ARES. Ciljna zasnova predvideva tudi uvoz UBL 2.1 XML, preverjanje DDV prek VIES in francoski poslovni register. Evidenca in preverjanje sta do naslednjih faz še ločena tokova.
+Trenutna izvedba omogoča ročni vnos in trajno evidenco računov, osnovna lokalna preverjanja, ARES HTML scraping, francoski REST vir, VIES SOAP ter statistiko SURS PC-Axis. Francoski vir in VIES imata samostojna obrazca. Povezovanje vseh preverjanj s shranjenim računom sledi v stage 3; uvoz UBL 2.1 XML še ni implementiran.
 
 Rezultat je strukturirano poročilo JSON s posameznimi preverjanji, zaznanimi neskladji, skupno oceno računa in priporočilom za nadaljnjo obravnavo.
 
@@ -10,8 +10,8 @@ Rezultat je strukturirano poročilo JSON s posameznimi preverjanji, zaznanimi ne
 
 | Storitev | Namen | Komunikacija | Status |
 |---|---|---|---|
-| VIES | Preverjanje veljavnosti EU DDV številk | SOAP / XML | Načrtovano |
-| API Recherche d'Entreprises | Preverjanje francoskih dobaviteljev po SIREN/SIRET | REST / JSON | Načrtovano |
+| VIES | Preverjanje veljavnosti EU DDV številk | SOAP / XML | Implementirano, samostojna poizvedba |
+| API Recherche d'Entreprises | Preverjanje francoskih dobaviteljev po SIREN/SIRET | REST / JSON | Implementirano, samostojna poizvedba |
 | ARES | Preverjanje čeških dobaviteljev po IČO | Web scraping / HTML DOM | Implementirano |
 | SURS / OPSI | Statistika uporabe strukturiranih e-računov | HTTP / PCAXIS (.PX) | Implementirano |
 
@@ -25,13 +25,13 @@ Rezultat je strukturirano poročilo JSON s posameznimi preverjanji, zaznanimi ne
 
 | Podatkovni tok | Oblika | Vsebina |
 |---|---|---|
-| Odjemalec → IVAS | UBL 2.1 XML | Številka računa, datum, valuta, podatki dobavitelja, identifikatorji in neto zneski postavk |
+| Odjemalec → IVAS | JSON iz ročnega vnosa (UBL načrtovan) | Številka računa, datum, valuta, podatki dobavitelja, identifikatorji in neto zneski postavk |
 | IVAS → VIES | SOAP/XML | Državna oznaka in DDV identifikacijska številka |
 | VIES → IVAS | SOAP/XML | Veljavnost DDV številke, datum preverjanja in drugi razpoložljivi podatki |
 | IVAS → francoski register | HTTP GET | SIREN oziroma SIRET dobavitelja |
 | Francoski register → IVAS | JSON | Registrski identifikator, naziv in status podjetja |
-| IVAS → ARES | HTTP GET | Češki identifikator IČO |
-| ARES → IVAS | JSON | IČO, naziv in drugi razpoložljivi registrski podatki |
+| IVAS → ARES | HTTP / brskalnik | Češki identifikator IČO |
+| ARES → IVAS | HTML DOM | IČO, naziv in drugi razpoložljivi registrski podatki |
 | IVAS → odjemalec | JSON | Rezultati preverjanj, ugotovitve, skupna ocena in priporočilo |
 
 ### Pravila preverjanja
@@ -74,7 +74,7 @@ Naloga 2: samostojni ARES HTML parser, navodila za zagon in dejanski rezultati p
 [`docs/Naloga2_Spletni_Parser.md`](docs/Naloga2_Spletni_Parser.md#14-implementacija-in-preverjanje-23-10-2026).
 Parser je preverjen na uradnem izrisanem DOM-u ARES; dokumentacija vsebuje Maven ukaze in dejanske rezultate testov.
 
-Implementirani so ARES HTML parser, SURS PC-Axis statistika, izbirna AI pomoč in gRPC pregled računa. Naloga 6, stage 1 dodaja PostgreSQL evidenco računov. Povezovanje evidence s preverjanji ter VIES in francoski register sledijo v naslednjih fazah.
+Implementirani so ARES HTML parser, SURS PC-Axis statistika, izbirna AI pomoč in gRPC pregled računa. Naloga 6, stage 1 dodaja PostgreSQL evidenco, stage 2 pa francoski REST vir in VIES SOAP. Povezovanje evidence z vsemi preverjanji in zgodovino sledi v stage 3.
 
 Za razvoj in demonstracijo so predvideni sintetični UBL računi ter javno dostopni registrski podatki.
 
@@ -128,3 +128,15 @@ samostojen. Tabele za zgodovino preverjanj so pripravljene za naslednje faze.
 
 **Zagon baze, nastavitve, API, testi in demonstracija:**
 [Naloga 6 – stage 1: evidenca računov](docs/Naloga6_Stage1_Shramba.md).
+
+
+## Zunanji viri – Naloga 6, stage 2
+
+Na **http://localhost:8080/invoice-verification.html#external-sources** sta
+samostojna obrazca za francoski API Recherche d’Entreprises (REST/JSON) po
+SIREN/SIRET in VIES (SOAP/XML) za preverjanje DDV številke. Vsaka oddaja pridobi
+nov odgovor z virom in časom; izpadi niso prikazani kot neveljavna številka ali
+neobstoječe podjetje. Rezultata še nista del zgornjega gRPC poročila ali evidence.
+
+**Pogodbi, API, omejitve, testi in demonstracija:**
+[Naloga 6 – stage 2: zunanji viri](docs/Naloga6_Stage2_Zunanji_Viri.md).
