@@ -5,7 +5,7 @@
   <title>IVAS | Preverjanje računa</title>
   <link rel="stylesheet" href="/css/statistics.css"><link rel="stylesheet" href="/css/invoice-advice.css">
   <link rel="stylesheet" href="/css/invoice-verification.css">
-  <script defer src="/js/invoice-verification.js"></script>
+  <script defer src="/js/invoice-verification.js"></script><script defer src="/js/external-sources.js"></script>
 </head>
 <body>
 <header><a class="brand" href="/">IVAS <span>Invoice Verification and Assessment System</span></a><nav aria-label="Glavna navigacija"><a href="/">Statistika e-računov</a><a href="/invoices.html">Računi</a><a href="/invoice-verification.html" aria-current="page">Preverjanje računa</a><a href="/invoice-advice.html">AI pomoč</a></nav></header>
@@ -54,6 +54,35 @@
     <section class="panel" id="report-panel" hidden><h2>Končno poročilo</h2><p id="assessment" class="assessment"></p><p id="recommendation"></p><ul id="findings"></ul><p id="report-scope" class="hint"></p></section>
     <details class="panel" id="json-panel" hidden><summary>Strukturirani rezultat JSON</summary><pre id="result-json"></pre><button type="button" id="download-json" class="secondary">Prenesi JSON</button></details>
   </section>
-  <aside class="note"><h2>Obseg pregleda</h2><p>To je osnovni pregled vnesenih podatkov. Uvoz in shema UBL, VIES, francoski register ter davčna skladnost še niso vključeni. Ujemanje vsot in registrskega zapisa ne potrjuje veljavnosti računa in ne pomeni odobritve plačila.</p><p>Podatki se ne shranjujejo v aplikacijsko zbirko ali brskalniško shrambo. Za demonstracijo uporabite sintetične račune in javne registrske podatke.</p></aside>
+
+  <section id="external-sources" aria-labelledby="sources-heading">
+    <h2 id="sources-heading">Zunanji viri</h2>
+    <p>Preverite francoski registrski zapis ali veljavnost DDV številke. Poizvedba se pošlje samo ob oddaji izbranega obrazca. Rezultat ostane ločen od zgornjega pregleda računa.</p>
+    <div class="source-grid">
+      <section class="panel" aria-labelledby="france-heading">
+        <p class="eyebrow">FRANCIJA · POSLOVNI REGISTER</p><h3 id="france-heading">Podatki podjetja</h3>
+        <form id="france-source-form"><fieldset id="france-source-fields">
+          <label>SIREN ali SIRET<input name="registryId" inputmode="numeric" required minlength="9" maxlength="14" pattern="([0-9]{9}|[0-9]{14})" autocomplete="off" aria-describedby="france-source-hint"></label>
+          <p id="france-source-hint" class="hint">SIREN ima 9 števk, SIRET pa 14. Iskanje preveri točno ujemanje; vnosa po imenu ne uporablja.</p>
+          <button type="submit" class="source-submit">Pridobi francosko podjetje</button>
+        </fieldset><button type="button" class="secondary source-cancel" id="france-source-cancel" hidden>Prekini čakanje</button></form>
+        <p id="france-source-status" role="status" aria-live="polite" class="source-status"></p>
+        <div id="france-source-result" class="source-result" hidden></div>
+      </section>
+      <section class="panel" aria-labelledby="vies-heading">
+        <p class="eyebrow">EVROPSKA UNIJA · VIES</p><h3 id="vies-heading">Preverjanje DDV številke</h3>
+        <form id="vies-source-form"><fieldset id="vies-source-fields">
+          <div class="vat-fields"><label>Državna oznaka<input name="countryCode" required minlength="2" maxlength="2" pattern="[A-Za-z]{2}" placeholder="SI" autocomplete="off"></label>
+            <label>DDV številka brez državne oznake<input name="vatNumber" required minlength="2" maxlength="12" pattern="[0-9A-Za-z+*.]{2,12}" autocomplete="off" aria-describedby="vies-source-hint"></label></div>
+          <p id="vies-source-hint" class="hint">Npr. oznako SI vnesite ločeno od številke. Za Grčijo uporabite EL ali GR, za Severno Irsko XI. VIES dobi samo oznako in številko.</p>
+          <button type="submit" class="source-submit">Preveri DDV v VIES</button>
+        </fieldset><button type="button" class="secondary source-cancel" id="vies-source-cancel" hidden>Prekini čakanje</button></form>
+        <p id="vies-source-status" role="status" aria-live="polite" class="source-status"></p>
+        <div id="vies-source-result" class="source-result" hidden></div>
+      </section>
+    </div>
+    <p class="hint">Vsaka oddaja pridobi nov odgovor vira. Izpad storitve ni dokaz neveljavne številke ali neobstoja podjetja. VIES ne potrjuje davčne skladnosti celotnega računa.</p>
+  </section>
+  <aside class="note"><h2>Obseg pregleda</h2><p>Zgornji sprotni pregled preveri vnesene podatke in izbirno ARES. Francoski register in VIES sta na voljo v samostojnih obrazcih spodaj in še nista vključena v končno poročilo. Uvoz in shema UBL ter davčna skladnost še niso vključeni. Ujemanje vsot in registrskega zapisa ne potrjuje veljavnosti računa in ne pomeni odobritve plačila.</p><p>Podatki se ne shranjujejo v aplikacijsko zbirko ali brskalniško shrambo. Za demonstracijo uporabite sintetične račune in javne registrske podatke.</p></aside>
 </main>
 </body></html>

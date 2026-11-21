@@ -8,3 +8,15 @@
 button:focus-visible,summary:focus-visible,a:focus-visible {outline:3px solid #b07c16;outline-offset:4px}
 [hidden] {display:none!important}
 @media(max-width:760px){.submit-row button {width:100%}}
+
+#external-sources {margin-top:40px} #external-sources>h2 {font-size:24px}
+#external-sources>p {font-size:16px;line-height:1.7;max-width:900px}
+.source-grid {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+.source-grid .panel {margin:10px 0;min-width:0}.source-grid h3 {font-size:20px;margin:8px 0 22px}
+.source-grid label {font-size:14px}.source-grid .hint {font-size:13px}.source-grid .eyebrow {font-size:12px}
+.source-grid .source-status,.source-result p {font-size:16px;line-height:1.6;overflow-wrap:anywhere;white-space:pre-line}
+.source-grid .source-status.error {color:#a32c24}.source-submit,.source-cancel {margin:12px 0 0}
+.source-result {border-top:1px solid #dbe5df;margin-top:20px;padding-top:12px}.source-result .source-outcome {font-size:18px;font-weight:700;color:#19352f}
+.vat-fields {display:grid;grid-template-columns:110px minmax(0,1fr);gap:18px}
+@media(max-width:760px){.source-grid {grid-template-columns:1fr}.source-submit,.source-cancel {width:100%}}
+@media(max-width:430px){.vat-fields {grid-template-columns:1fr}.source-grid input {font-size:16px}}

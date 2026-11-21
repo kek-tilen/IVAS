@@ -61,7 +61,7 @@ public class InvoiceVerificationRpc extends InvoiceVerificationServiceGrpc.Invoi
                 checks.add(compareSupplier(request.getInvoice().getSupplier(), supplier));
             } else checks.add(check("SUPPLIER_REGISTRY", CheckStatus.UNKNOWN,
                     "Registrsko preverjanje ni bilo izbrano.", "ARES_WEB / HTML_DOM"));
-            checks.add(check("VAT_ID", CheckStatus.UNKNOWN, "VIES v tem obsegu ni implementiran.", "VIES"));
+            checks.add(check("VAT_ID", CheckStatus.UNKNOWN, "VIES v tem poročilu ni izveden. Na voljo je samostojni obrazec za preverjanje DDV številke.", "VIES"));
             checks.add(check("TAX_COMPLIANCE", CheckStatus.UNKNOWN, "Davčna skladnost ni preverjena.", "NOT_IMPLEMENTED"));
             var assessment = checks.stream().anyMatch(c -> c.getStatus() == CheckStatus.FAIL)
                     ? Assessment.REVIEW_REQUIRED : Assessment.INCOMPLETE_VERIFICATION;

@@ -14,7 +14,8 @@ public class VerificationBodyLimit extends OncePerRequestFilter {
         boolean verification = request.getMethod().equals("POST") && path.startsWith("/api/v1/verification/");
         boolean invoices = java.util.Set.of("POST", "PATCH").contains(request.getMethod())
                 && (path.equals("/api/v1/invoices") || path.matches("/api/v1/invoices/[0-9a-fA-F-]{36}"));
-        return !verification && !invoices;
+        boolean sources = request.getMethod().equals("POST") && path.startsWith("/api/v1/sources/");
+        return !verification && !invoices && !sources;
     }
     @Override protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws ServletException, IOException {
